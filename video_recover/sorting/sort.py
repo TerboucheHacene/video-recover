@@ -6,7 +6,35 @@ from video_recover.data_models.video import Video
 
 
 class Sort:
-    """Class to sort the frames in a video."""
+    """Class to sort the frames in a video.
+
+    It uses the distance metrics to sort the frames. The distance metrics are computed
+    in the video object and are stored in the distance_metrics attribute:
+    The sorting algorithm is based on the following steps:
+    1. Get the ordering matrix from the distance metrics.
+    2. Get the count matches matrix from the distance metrics.
+    3. Create a frame groups array. The `frame_groups` array is a list of lists.
+    Each list in the `frame_groups` array is a group of frames that are close temporally
+    to each other. Initially, each element in the array is a list.
+    4. While not all frames are combined:
+        4.1. Find the most powerful frame match.
+        4.2. Combine the frames in the frame groups array.
+            - The frames that are similar to each other are combined into a single group.
+            - The frames that belong to different groups are combined into a single group
+            - The order of the frames in the combined group is determined by the position
+            of the frames in each group.
+        4.3. Update the count matches matrix by setting the number of matches of the
+        frames in the combined group to -1, so that they are not considered in the next
+        iteration.
+        4.4. Update the count matches matrix by setting the number of matches of the
+        frames that are in the middle of the combined group to -1, so that they are not
+        considered in the next iteration.
+    5. Return the sorted indices. The indices are the indices of the frames in the
+    original video.  The
+    indices of the frames in the original video are the indices of the lists in the
+    `frame_groups` array. At the end of the algorithm, the `frame_groups` array contains
+    only one list, which contains the indices of the frames in the original video.
+    """
 
     def __init__(self, ordering_matrix: str = "offset", combine_matrices: bool = False):
         # check if ordering_matrix is valid
@@ -81,6 +109,7 @@ class Sort:
             im, jm = best_match
             if any([(im in group) and (jm in group) for group in frame_groups]):
                 count_matches_matrix[im, jm] = -1
+                count_matches_matrix[jm, im] = -1
             else:
                 # combine the frames
                 new_group = self.update_frame_groups(frame_groups, best_match)
@@ -144,7 +173,7 @@ class Sort:
     ) -> int:
         """Update the count matches matrix."""
         im, jm = best_match
-        if initial_frame is not None:
+        if initial_frame != -1:
             initial_frame = -1
             count_matches_matrix[initial_frame, :] = -1
             count_matches_matrix[:, initial_frame] = -1

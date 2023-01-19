@@ -7,6 +7,12 @@ from video_recover.data_models.video import Video
 
 
 class OutliersDetection:
+    """Class to detect outliers in a video.
+
+    It uses the Isolation Forest algorithm based on the deep features of the
+    frames in the video.
+    """
+
     def __init__(self):
         self.anomaly_detection_model = IsolationForest(random_state=0, n_estimators=120)
 

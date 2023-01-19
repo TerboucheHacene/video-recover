@@ -3,6 +3,7 @@ import torchvision
 
 
 def get_resnet50_model():
+    """Get the ResNet50 model. It is used to extract the deep features of the frames."""
     # extract the features from the images using ResNet50
     resnet50 = torchvision.models.resnet50(weights=torchvision.models.ResNet50_Weights)
     resnet50.eval()
@@ -11,6 +12,7 @@ def get_resnet50_model():
 
 
 def get_vgg16_features():
+    """Get the VGG16 model. It is used to extract the deep features of the frames."""
     # extract the features from the images using VGG16
     vgg16 = torchvision.models.vgg16(pretrained=True)
     vgg16.eval()
@@ -21,6 +23,7 @@ def get_vgg16_features():
 
 
 def get_transforms():
+    """Get the transforms to apply to the frames before extracting the deep features."""
     # define the transforms
     transforms = torchvision.transforms.Compose(
         [

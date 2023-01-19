@@ -8,6 +8,13 @@ from video_recover.data_models.video import Frame, Video
 
 
 class ExtractFrames:
+    """Class to extract frames from a video.
+
+    It extracts every n frames. By default, n=1. It creates a folder with the same name
+    as the video and saves the frames in that folder. It also creates a video object
+    and adds the frames to it.
+    """
+
     def __init__(self, every_n_frames=1):
         self.every_n_frames = every_n_frames
 
@@ -54,6 +61,12 @@ class ExtractFrames:
 
 
 class VideoFromFrames:
+    """
+    Class to create a video from a list of frames.
+
+    It creates a video object and adds the frames to it.
+    """
+
     def __call__(
         self, video: Video, output_path: Path, frames_indices: List[int]
     ) -> Video:

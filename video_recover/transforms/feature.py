@@ -8,6 +8,8 @@ from video_recover.data_models.video import Video
 
 
 class DeepFeatureExtractor:
+    """Class to extract the deep features of the frames in a video."""
+
     def __init__(
         self,
         model: torch.nn.Module,
@@ -52,6 +54,8 @@ class DeepFeatureExtractor:
 
 
 class FeatureDescriptor:
+    """Class to extract the features and descriptors of the frames in a video."""
+
     def __init__(self, feature_extractor: str = "ORB"):
         descriptor = {
             "ORB": cv2.ORB_create,
@@ -86,6 +90,11 @@ class FeatureDescriptor:
 
     @staticmethod
     def convert_cv_key_points_to_dict(key_points) -> List[Dict[str, Any]]:
+        """Convert the key points to a list of dicts.
+
+        This is needed to be able to serialize the key points when using the
+        multiprocessing module.
+        """
         return [
             {
                 "pt": key_point.pt,

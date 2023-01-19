@@ -18,6 +18,8 @@ class DistanceMetrics:
 
 @dataclasses.dataclass
 class Video:
+    """Class to store the information of a video."""
+
     name: str
     path: str
     fps: float
@@ -100,6 +102,8 @@ class Video:
 
 @dataclasses.dataclass
 class Frame:
+    """Class to store the information of a frame."""
+
     name: str
     path: str
     index: int = 0

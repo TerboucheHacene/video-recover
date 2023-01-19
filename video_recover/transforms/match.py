@@ -39,6 +39,12 @@ class MatchingMetrics(InterFrameMetric):
         self.aggregator = aggregators[aggregator_name]
 
     def __call__(self, query_frame: Frame, train_frame: Frame) -> Dict[str, float]:
+        """Compute the metrics between two frames."""
+        # create the matcher object based on the matcher name
+        # the matcher is created here and not in the __init__ method to avoid the
+        # problem of the multiprocessing module when using the cv2 module
+        # ( the multiprocessing module cannot pickle the cv2 module)
+
         if self.matcher_name == "FLANN":
             index_params = dict(
                 algorithm=6, table_number=6, key_size=12, multi_probe_level=2
